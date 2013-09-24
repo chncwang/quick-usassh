@@ -21,12 +21,14 @@ sub pingBestServer {
         my $address = &serverAddress($_);
         my $cmd = "ping $address | head -n2 > $time_file &";
         system $cmd;
-        sleep 1;
+        sleep(1);
 
         my $line = `head -n2 $time_file | tail -n1`;
         if ($line == "") {
+            say "$address : out";
             next;
         } elsif ($line =~ /time=(\d+)/) {
+            say "$address : $1";
             if ($1 < $min) {
                 $min = $1;
                 $min_num = $_;
